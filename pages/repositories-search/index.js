@@ -1,58 +1,51 @@
-import React, { Component } from "react";
-import Link from 'next/link'
+import React, { useState } from "react";
 import { search } from "../../utils";
 import Results from "../../components/Results";
 import styles from '../../styles/styles.module.css'
+import { Header } from "../../components/Header";
+import { Footer } from "../../components/Footer";
 
-class RepositoriesSearch extends Component {
-  state = {
-    repositories: null,
-    loading: false,
-    value: ""
-  };
+const RepositoriesSearch = () => {
+  const [repositories, setRepositories] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState("");
 
-  search = async val => {
-    this.setState({ loading: true });
+  const performSearch = async val => {
+    setLoading(true);
     const items = await search(
       `https://api.github.com/search/repositories?q=${val}`
     );
-    const repositories = items;
-
-    this.setState({ repositories, loading: false });
+    setRepositories(items);
+    setLoading(false);
   };
 
-  onChangeHandler = async e => {
-    this.search(e.target.value);
-    this.setState({ value: e.target.value });
+  const onChangeHandler = async e => {
+    performSearch(e.target.value);
+    setValue(e.target.value);
   };
 
-  get renderRepositories() {
-    let repositories = <h1>There's no repositories</h1>;
-    if (this.state.repositories) {
-      repositories = <Results repositories={this.state.repositories} />;
+  const renderRepositories = () => {
+    if (!repositories) {
+      return <h1>検索結果はありません</h1>;
     }
-
-    return repositories;
+    return <Results repositories={repositories} />;
   }
 
-  render() {
-    return (
+  return (
+    <>
+      <Header />
       <main className={styles.main}>
-        <div className={styles.linkBack}>
-          <Link href="/">
-            <p>&larr; Back</p>
-          </Link>
-        </div>
         <input
-          value={this.state.value}
-          onChange={e => this.onChangeHandler(e)}
-          placeholder="Type something to search for a repository"
+          value={value}
+          onChange={e => onChangeHandler(e)}
+          placeholder="調べ物はなんですか"
           className={styles.input}
         />
-        {this.renderRepositories}
+        {renderRepositories()}
       </main>
-    );
-  }
+      <Footer />
+    </>
+  );
 }
 
 export default RepositoriesSearch;

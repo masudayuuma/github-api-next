@@ -1,18 +1,19 @@
 import React from "react";
 import styles from '../styles/styles.module.css'
+import Link from 'next/link'; 
 
 const Repository = props => {
-  const { full_name, avatar_url, url, html_url } = props.item;
+  const { full_name, avatar_url, url, html_url, id } = props.item;
 
   return (
-    <a href={html_url} target="_blank" className={styles.card}>
-      <div className={styles.dFlex}>
-        <div>
-          <h3>{full_name}</h3>
-          <p>{url}</p>
+    <Link href={`/repo/${id}`} className={styles.repo}>
+        <div className={styles.dFlex}>
+          <div>
+            <h3>{full_name}</h3>
+            <p>{url}</p>
+          </div>
         </div>
-      </div>
-    </a>
+    </Link>
   );
 };
 
