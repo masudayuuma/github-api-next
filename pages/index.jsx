@@ -3,7 +3,8 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 import styles from '../styles/styles.module.css';
 import { useRouter } from 'next/router';
-import { usernameState, emailState } from './atom.js'; // パスは実際のファイルの場所に合わせて変更してください
+import { usernameState ,emailState} from './atom';
+// import { usernameState, emailState } from '../atom.js'; // パスは実際のファイルの場所に合わせて変更してください
 
 const Signup = () => {
     const router = useRouter();
